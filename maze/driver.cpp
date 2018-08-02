@@ -255,8 +255,6 @@ int main() {
 
 			// Display Stats
 			if (displayStats)
-				//swprintf_s(screen, 60, L"%dx%d maze, X=%3.2f, Y=%3.2f, A=%3.2f, FPS=%3.2f",
-				//	w, h, player.fX, player.fY, player.fAngle, 1.0f / fElapsedTime);
 				swprintf(screen, L"%dx%d maze, X=%3.2f, Y=%3.2f, A=%3.2f, FPS=%3.2f",
 					w, h, player.fX, player.fY, player.fAngle, 1.0f / fElapsedTime);
 
