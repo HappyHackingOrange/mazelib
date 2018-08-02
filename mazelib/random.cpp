@@ -25,8 +25,6 @@ void random::shuffle(std::vector<std::pair<int, int>> &vect) {
 	std::shuffle(vect.begin(), vect.end(), gen);
 }
 
-//template <typename Container>
-//auto random::choice(const Container& c) -> decltype(*begin(c))& {
 std::pair<int, int> random::choice(const std::vector<std::pair<int, int>> c) {
 	static std::random_device rd;
 	static std::mt19937 gen(rd());

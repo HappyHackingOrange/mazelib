@@ -67,8 +67,6 @@ namespace random {
 	Return value :
 	A random item.
 	*/
-	//template <typename Container>
-	//auto choice(const Container& c) -> decltype(*begin(c))&;
 	std::pair<int, int> choice(const std::vector<std::pair<int, int>> c);
 
 }

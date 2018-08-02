@@ -1,8 +1,8 @@
-# mazelib C++ API
+# mazelib C++ library
 
 The mazelib library provides tools to generate and solving 2D mazes, and 3D engines to enable 3D visualization of generated mazes.
 
-## Getting Started
+## quickstart
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
