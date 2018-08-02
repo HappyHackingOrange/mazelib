@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files\generate">
+      <UniqueIdentifier>{397f165e-c3a5-44a6-b0a3-5feba1f5e879}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\generate">
+      <UniqueIdentifier>{9a62e52e-66e7-470e-af75-36b7f354b29f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\solve">
+      <UniqueIdentifier>{85dcca4c-84ef-4556-ad26-7e061293d2f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\solve">
+      <UniqueIdentifier>{2749205e-3c4e-4726-bbe6-7795bee10522}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Maze.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MazeGenAlgo.h">
+      <Filter>Header Files\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="random.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AldousBroder.h">
+      <Filter>Header Files\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Prims.h">
+      <Filter>Header Files\generate</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Header Files\solve</Filter>
+    </ClInclude>
+    <ClInclude Include="MazeSolveAlgo.h">
+      <Filter>Header Files\solve</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Maze.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="random.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AldousBroder.cpp">
+      <Filter>Source Files\generate</Filter>
+    </ClCompile>
+    <ClCompile Include="Prims.cpp">
+      <Filter>Source Files\generate</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Source Files\solve</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>
