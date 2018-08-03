@@ -20,7 +20,7 @@ Here's a simple C++ code example to generate a maze:
 		std::cout << m.tostring() << std::endl;
 	}
 
-A generating algorithm is selected, the Prim's algorithm in this case, to generate a random maze which is 8 high and 16 wide.  The maze should look something like this:
+A generating algorithm is selected, the Prim's algorithm in this case, to generate a random maze which is 8 high and 16 wide.  The above code should print a maze which should look something like this below:
 
 	#################################
 	#.#...#.....#.#.#.....#.#.#.....#
@@ -42,7 +42,7 @@ A generating algorithm is selected, the Prim's algorithm in this case, to genera
 
 ### Solving the maze
 
-To solve the maze, you can add few lines like this:
+To solve the maze, just add in few lines:
 
 	#include "Maze.h"
 	#include "Prims.h"
@@ -58,7 +58,7 @@ To solve the maze, you can add few lines like this:
 		std::cout << m.tostring(true, true) << std::endl;
 	}
 
-This code prints the following maze:
+This code should print the following maze, which shows the starting position "S", the ending position "E", and the solution path which is a trail of "+"s.
 
 	#################E###############
 	#.#...#.....#.#.#+++++#.#.#.....#
@@ -78,4 +78,3 @@ This code prints the following maze:
 	#...#.....#.#...#.......#.#+#.#.#
 	###########################S#####
 
-where S is the starting position, E is the ending position, and the sequence of "+"s is one possible route from the beginning to the end.
