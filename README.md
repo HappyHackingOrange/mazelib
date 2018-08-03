@@ -2,6 +2,8 @@
 
 The mazelib library provides tools to generate and solving 2D mazes, and 3D engines to visualize mazes in 3D and allow an user to interact with it.
 
+This library only supports C++17 version or higher.
+
 ## Quickstart
 
 ### Creating a maze
@@ -18,6 +20,6 @@ Here's a simple C++ code example to generate a maze:
 		std::cout << m.tostring() << std::endl;
 	}
 
-A generating algorihm is selected, the Prim's algorithm in this case, to generate a random maze which is 8 high and 16 wide.  The maze should look something like this:
+A generating algorithm is selected, the Prim's algorithm in this case, to generate a random maze which is 8 high and 16 wide.  The maze should look something like this:
 
 ![Generated 8x16 Maze](/images/generated_maze.png)
