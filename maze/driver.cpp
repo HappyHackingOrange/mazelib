@@ -26,7 +26,7 @@ bool showMinimap = true;			// Display minimap?
 int minimapWidth = 25;				// Minimap width
 int minimapHeight = 13;				// Minimap height
 
-int main() {
+int _main() {
 
 	// Create Screen Buffer
 	wchar_t *screen = new wchar_t[nScreenWidth*nScreenHeight];
@@ -69,7 +69,7 @@ int main() {
 
 		// Create Map of world space # = wall block, . = space
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-		std::wstring map = converter.from_bytes(m.tostring(true));
+		std::wstring map = converter.from_bytes(m.tostring(true, false, ""));
 
 		auto tp1 = std::chrono::system_clock::now();
 		auto tp2 = std::chrono::system_clock::now();
@@ -100,7 +100,8 @@ int main() {
 					fAngleDiff -= 2 * PI_F;
 
 				if (fAngleDiff != 0) {
-					(fAngleDiff < 0) ? player.turnLeft(fElapsedTime) : player.turnRight(fElapsedTime);
+					(fAngleDiff < 0) ? player.turnLeft(fElapsedTime) : 
+						player.turnRight(fElapsedTime);
 					float fNewAngleDiff = (fXDiff == 0 && fYDiff == 0) ? 0 :
 						atan2(fXDiff, fYDiff) - player.fAngle;
 					if (fNewAngleDiff < -PI_F)

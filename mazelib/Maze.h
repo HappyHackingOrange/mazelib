@@ -62,7 +62,7 @@ public:
 	/*
 	Return a string representation of the maze.
 	*/
-	std::string tostring(bool entrances = false, bool solutions = false, std::string delim = "");
+	std::string tostring(bool entrances = false, bool solutions = false, std::string delim = "\n");
 
 
 protected:
