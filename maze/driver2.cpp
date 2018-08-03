@@ -3,7 +3,7 @@
 
 int main() {
 	Maze m = Maze();
-	m.generator = new Prims(16, 53);
+	m.generator = new Prims(8, 16);
 	m.generate();
 	std::cout << m.tostring() << std::endl;
 }

@@ -13,11 +13,11 @@ Here's a simple C++ code example to generate a maze:
 
 	int main() {
 		Maze m = Maze();
-		m.generator = new Prims(16, 53);
+		m.generator = new Prims(8, 16);
 		m.generate();
 		std::cout << m.tostring() << std::endl;
 	}
 
-A generating algorihm is selected, the Prim's algorithm in this case, to generate a random maze which is 16 high and 53 wide.  The maze should look something like this:
+A generating algorihm is selected, the Prim's algorithm in this case, to generate a random maze which is 8 high and 16 wide.  The maze should look something like this:
 
-![Generated 16x53 Maze](/images/generated_maze.png)
+![Generated 8x16 Maze](/images/generated_maze.png)
