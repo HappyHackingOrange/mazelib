@@ -1,6 +1,6 @@
 #include "Prims.h"
 
-Prims::Prims(int h, int w) : MazeGenAlgo(h, w) {}
+Prims::Prims(int h, int w, bool hasBounds) : MazeGenAlgo(h, w, hasBounds) {}
 
 xt::xarray<int8_t> Prims::generate() {
 

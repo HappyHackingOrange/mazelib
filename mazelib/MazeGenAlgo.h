@@ -12,14 +12,16 @@ public:
 	int w;
 	int H;
 	int W;
+	bool hasBounds;
 
-	MazeGenAlgo(int h, int w) {
+	MazeGenAlgo(int h, int w, bool hasBounds) {
 		if (h < 3 || w < 3)
 			throw std::out_of_range("Mazes cannot be smaller than 3x3.");
 		this->h = h;
 		this->w = w;
 		this->H = (2 * h) + 1;
 		this->W = (2 * w) + 1;
+		this->hasBounds = hasBounds;
 	}
 
 	virtual xt::xarray<int8_t> generate() = NULL;

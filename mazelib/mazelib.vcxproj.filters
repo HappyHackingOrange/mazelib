@@ -21,6 +21,12 @@
     <Filter Include="Source Files\solve">
       <UniqueIdentifier>{2749205e-3c4e-4726-bbe6-7795bee10522}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\view">
+      <UniqueIdentifier>{8e0116de-007a-4b2a-b4da-6f8241bcce68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\view">
+      <UniqueIdentifier>{518b7dc6-3375-4687-bb55-5e2705020209}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Maze.h">
@@ -47,6 +53,12 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CommandLineFPS.h">
+      <Filter>Header Files\view</Filter>
+    </ClInclude>
+    <ClInclude Include="View.h">
+      <Filter>Header Files\view</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Maze.cpp">
@@ -66,6 +78,9 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandLineFPS.cpp">
+      <Filter>Source Files\view</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

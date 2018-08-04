@@ -1,6 +1,6 @@
 # mazelib C++ library
 
-The mazelib library provides tools to generate and solving 2D mazes, and 3D engines to visualize mazes in 3D and allow an user to interact with it.
+The mazelib library provides tools to generate and solving 2D mazes, and 3D engines to visualize mazes in 3D and allow an user to interact with it. Most algorithms come with opinional parameters to customize the results.
 
 This library only supports C++17 version or higher.
 
@@ -8,7 +8,7 @@ This library only supports C++17 version or higher.
 
 ### Creating a maze
 
-Here's a simple C++ code example to generate a maze:
+Here's a simple example to generate a maze:
 
 	#include "maze.h"
 	#include "prims.h"

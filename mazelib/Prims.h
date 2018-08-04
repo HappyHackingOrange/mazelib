@@ -15,7 +15,7 @@ V with another cell not in V.
 class Prims : public MazeGenAlgo {
 
 public:
-	Prims(int h, int w);
+	Prims(int h, int w, bool hasBounds = true);
 	xt::xarray<int8_t> generate() override;
 
 };

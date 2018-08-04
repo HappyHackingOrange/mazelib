@@ -1,6 +1,6 @@
 #include "AldousBroder.h"
 
-AldousBroder::AldousBroder(int h, int w) : MazeGenAlgo(h, w) {}
+AldousBroder::AldousBroder(int h, int w, bool hasBounds) : MazeGenAlgo(h, w, hasBounds) {}
 
 xt::xarray<int8_t> AldousBroder::generate() {
 

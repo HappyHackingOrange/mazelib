@@ -8,21 +8,20 @@ class Player {
 
 public:
 
-	float fX;
-	float fY;
-	float fAngle;
-	float fSpeed;
-	bool isComputer;
+	float x = 0;
+	float y = 0;
+	float angle = 0;
+	float speed = 4.0f;
+	bool isComputer = false;
 
 	Player();
-	//~Player();
 
-	void turnLeft(const float fElapsedTime);
-	void turnRight(const float fElapsedTime);
-	void moveForward(const float fElapsedTime, const std::wstring map, const int nMapWidth);
-	void moveBack(const float fElapsedTime, const std::wstring map, const int nMapWidth);
-	void strafeLeft(const float fElapsedTime, const std::wstring map, const int nMapWidth);
-	void strafeRight(const float fElapsedTime, const std::wstring map, const int nMapWidth);
+	void turnLeft(const float elapsedTime);
+	void turnRight(const float elapsedTime);
+	void moveForward(const float elapsedTime, const std::wstring map, const int mapWidth);
+	void moveBack(const float elapsedTime, const std::wstring map, const int mapWidth);
+	void strafeLeft(const float elapsedTime, const std::wstring map, const int mapWidth);
+	void strafeRight(const float elapsedTime, const std::wstring map, const int mapWidth);
 
 };
 

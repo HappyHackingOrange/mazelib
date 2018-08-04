@@ -1,61 +1,51 @@
 #include "Player.h"
 
-Player::Player() {
-	fX = 0;
-	fY = 0;
-	fAngle = 0;
-	fSpeed = 2.0944f;
-	isComputer = false;
+Player::Player() { }
+
+void Player::turnLeft(const float elapsedTime) {
+	angle -= (speed * 0.75f) * elapsedTime;
+	if (angle < -PI_F)
+		angle += 2 * PI_F;
 }
 
-//Player::~Player()
-//{
-//}
-
-void Player::turnLeft(const float fElapsedTime) {
-	fAngle -= (fSpeed * 0.75f) * fElapsedTime;
-	if (fAngle < -PI_F)
-		fAngle += 2 * PI_F;
+void Player::turnRight(const float elapsedTime) {
+	angle += (speed * 0.75f) * elapsedTime;
+	if (angle > PI_F)
+		angle -= 2 * PI_F;
 }
 
-void Player::turnRight(const float fElapsedTime) {
-	fAngle += (fSpeed * 0.75f) * fElapsedTime;
-	if (fAngle > PI_F)
-		fAngle -= 2 * PI_F;
-}
-
-void Player::moveForward(const float fElapsedTime, const std::wstring map, const int nMapWidth) {
-	fX += sinf(fAngle) * fSpeed * fElapsedTime;
-	fY += cosf(fAngle) * fSpeed * fElapsedTime;
-	if (map.c_str()[(int)fX * nMapWidth + (int)fY] == '#') {
-		fX -= sinf(fAngle) * fSpeed * fElapsedTime;
-		fY -= cosf(fAngle) * fSpeed * fElapsedTime;
+void Player::moveForward(const float elapsedTime, const std::wstring map, const int mapWidth) {
+	y += sinf(angle) * speed * elapsedTime;
+	x += cosf(angle) * speed * elapsedTime;
+	if (map.c_str()[(int)y * mapWidth + (int)x] == '#') {
+		y -= sinf(angle) * speed * elapsedTime;
+		x -= cosf(angle) * speed * elapsedTime;
 	}
 }
 
-void Player::moveBack(const float fElapsedTime, const std::wstring map, const int nMapWidth) {
-	fX -= sinf(fAngle) * fSpeed * fElapsedTime;
-	fY -= cosf(fAngle) * fSpeed * fElapsedTime;
-	if (map.c_str()[(int)fX * nMapWidth + (int)fY] == '#') {
-		fX += sinf(fAngle) * fSpeed * fElapsedTime;
-		fY += cosf(fAngle) * fSpeed * fElapsedTime;
+void Player::moveBack(const float elapsedTime, const std::wstring map, const int mapWidth) {
+	y -= sinf(angle) * speed * elapsedTime;
+	x -= cosf(angle) * speed * elapsedTime;
+	if (map.c_str()[(int)y * mapWidth + (int)x] == '#') {
+		y += sinf(angle) * speed * elapsedTime;
+		x += cosf(angle) * speed * elapsedTime;
 	}
 }
 
-void Player::strafeLeft(const float fElapsedTime, const std::wstring map, const int nMapWidth) {
-	fX -= cosf(fAngle) * fSpeed * fElapsedTime;
-	fY += sinf(fAngle) * fSpeed * fElapsedTime;
-	if (map.c_str()[(int)fX * nMapWidth + (int)fY] == '#') {
-		fX += cosf(fAngle) * fSpeed * fElapsedTime;
-		fY -= sinf(fAngle) * fSpeed * fElapsedTime;
+void Player::strafeLeft(const float elapsedTime, const std::wstring map, const int mapWidth) {
+	y -= cosf(angle) * speed * elapsedTime;
+	x += sinf(angle) * speed * elapsedTime;
+	if (map.c_str()[(int)y * mapWidth + (int)x] == '#') {
+		y += cosf(angle) * speed * elapsedTime;
+		x -= sinf(angle) * speed * elapsedTime;
 	}
 }
 
-void Player::strafeRight(const float fElapsedTime, const std::wstring map, const int nMapWidth) {
-	fX += cosf(fAngle) * fSpeed * fElapsedTime;
-	fY -= sinf(fAngle) * fSpeed * fElapsedTime;
-	if (map.c_str()[(int)fX * nMapWidth + (int)fY] == '#') {
-		fX -= cosf(fAngle) * fSpeed * fElapsedTime;
-		fY += sinf(fAngle) * fSpeed * fElapsedTime;
+void Player::strafeRight(const float elapsedTime, const std::wstring map, const int mapWidth) {
+	y += cosf(angle) * speed * elapsedTime;
+	x -= sinf(angle) * speed * elapsedTime;
+	if (map.c_str()[(int)y * mapWidth + (int)x] == '#') {
+		y -= cosf(angle) * speed * elapsedTime;
+		x += sinf(angle) * speed * elapsedTime;
 	}
 }

@@ -19,8 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="driver.cpp" />
-    <ClCompile Include="driver2.cpp" />
+    <ClCompile Include="example.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

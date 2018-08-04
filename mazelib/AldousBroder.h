@@ -12,7 +12,7 @@ class AldousBroder : public MazeGenAlgo {
 
 public:
 
-	AldousBroder(int h, int w);
+	AldousBroder(int h, int w, bool hasBounds = true);
 	xt::xarray<int8_t> generate() override;
 
 };

@@ -22,8 +22,6 @@ public:
 	MazeSolveAlgo * solver;
 	std::vector<std::vector<std::pair<int, int>>> solutions;
 
-	//MazeViewer * viewer;
-
 	Maze();
 	~Maze();
 
