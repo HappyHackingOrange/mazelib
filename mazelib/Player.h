@@ -11,17 +11,21 @@ public:
 	float x = 0;
 	float y = 0;
 	float angle = 0;
-	float speed = 4.0f;
+	float speed = 3.0f;
 	bool isComputer = false;
 
 	Player();
 
 	void turnLeft(const float elapsedTime);
 	void turnRight(const float elapsedTime);
-	void moveForward(const float elapsedTime, const std::wstring map, const int mapWidth);
-	void moveBack(const float elapsedTime, const std::wstring map, const int mapWidth);
-	void strafeLeft(const float elapsedTime, const std::wstring map, const int mapWidth);
-	void strafeRight(const float elapsedTime, const std::wstring map, const int mapWidth);
+	void moveForward(const float elapsedTime, const std::wstring map, 
+		const int mapWidth, const int mapHeight);
+	void moveBack(const float elapsedTime, const std::wstring map, 
+		const int mapWidth, const int mapHeight);
+	void strafeLeft(const float elapsedTime, const std::wstring map,
+		const int mapWidth, const int mapHeight);
+	void strafeRight(const float elapsedTime, const std::wstring map,
+		const int mapWidth, const int mapHeight);
 
 };
 

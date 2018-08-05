@@ -24,20 +24,25 @@ void CommandLineFPS::start() {
 	player.y = maze.start.first + 0.5f;
 
 	// Player Starting Rotation
-	int position_index = (int)player.y * maze.generator->W + (int)player.x;
+	int position_index = static_cast<int>(player.y) * maze.generator->W + static_cast<int>(player.x);
 	int row = position_index / maze.generator->W;
 	int col = position_index % maze.generator->W;
-	std::pair<int, int> direction(solution.front().first - row, solution.front().second - col);
-	if ((direction.first == 1 || direction.first == 1 - maze.generator->H) && 
+	int rowStep = solution.front().first - row;
+	int colStep = solution.front().second - col;
+	if (abs(rowStep) > 1)
+		rowStep = (rowStep < 0) - (rowStep > 0);
+	if (abs(colStep) > 1)
+		colStep = (colStep < 0) - (colStep > 0);
+	std::pair<int, int> direction(rowStep, colStep);
+	if ((direction.first == 1 || direction.first == 1 - maze.generator->H) &&
 		direction.second == 0)
 		player.angle = PI_F / 2;
-	else if (direction.first == 0 && 
+	else if (direction.first == 0 &&
 		(direction.second == -1 || direction.second == maze.generator->W - 1))
 		player.angle = PI_F;
-	if ((direction.first == -1 || direction.first == maze.generator->H - 1) && 
+	if ((direction.first == -1 || direction.first == maze.generator->H - 1) &&
 		direction.second == 0)
 		player.angle = -PI_F / 2;
-
 
 	auto tp1 = std::chrono::system_clock::now();
 	auto tp2 = std::chrono::system_clock::now();
@@ -45,7 +50,7 @@ void CommandLineFPS::start() {
 	// If player is computer, the computer goes to the end goal by itself.
 	// Else, navigate yourself to the end
 	while (player.isComputer && solution.size() != 0 || !player.isComputer &&
-		map[((int)player.y) * maze.generator->W + (int)player.x] != 'E') {
+		map[static_cast<int>(player.y) * maze.generator->W + static_cast<int>(player.x)] != 'E') {
 
 		// We'll need time differential per frame to calculate modification
 		// to movement speeds, to ensure consistant movement, as ray-tracing
@@ -59,6 +64,11 @@ void CommandLineFPS::start() {
 
 			float xDiff = solution.front().second + 0.5f - player.x;
 			float yDiff = solution.front().first + 0.5f - player.y;
+
+			if (abs(xDiff) > 2)
+				xDiff = -copysignf(1.0, xDiff);
+			if (abs(yDiff) > 2)
+				yDiff = -copysignf(1.0, yDiff);
 
 			float angleDiff = (xDiff == 0 && yDiff == 0) ? 0 :
 				atan2(yDiff, xDiff) - player.angle;
@@ -83,7 +93,7 @@ void CommandLineFPS::start() {
 
 			// Go forward after computer finishes turning.
 			else if (xDiff != 0 || yDiff != 0) {
-				player.moveForward(fElapsedTime, map, maze.generator->W);
+				player.moveForward(fElapsedTime, map, maze.generator->W, maze.generator->H);
 				float newXDiff = solution.front().second + 0.5f - player.x;
 				float newYDiff = solution.front().first + 0.5f - player.y;
 				if (xDiff * newXDiff < 0)
@@ -110,19 +120,19 @@ void CommandLineFPS::start() {
 
 			// Handle Forwards movement & collision
 			if (GetAsyncKeyState((unsigned short)'W') & 0x8000)
-				player.moveForward(fElapsedTime, map, maze.generator->W);
+				player.moveForward(fElapsedTime, map, maze.generator->W, maze.generator->H);
 
 			// Handle backwards movement & collision
 			if (GetAsyncKeyState((unsigned short)'S') & 0x8000)
-				player.moveBack(fElapsedTime, map, maze.generator->W);
+				player.moveBack(fElapsedTime, map, maze.generator->W, maze.generator->H);
 
 			// Handle strafe left movement & collision
 			if (GetAsyncKeyState((unsigned short)'Q') & 0x8000)
-				player.strafeLeft(fElapsedTime, map, maze.generator->W);
+				player.strafeLeft(fElapsedTime, map, maze.generator->W, maze.generator->H);
 
 			// Handle strafe right movement & collision
 			if (GetAsyncKeyState((unsigned short)'E') & 0x8000)
-				player.strafeRight(fElapsedTime, map, maze.generator->W);
+				player.strafeRight(fElapsedTime, map, maze.generator->W, maze.generator->H);
 
 		}
 
@@ -138,60 +148,59 @@ void CommandLineFPS::start() {
 			bool bHitWall = false;		// Set when ray hits wall block
 			bool bBoundary = false;		// Set when ray hits boundary between two wall blocks
 
-			float fEyeX = sinf(fRayAngle); // Unit vector for ray in player space
-			float fEyeY = cosf(fRayAngle);
+			float eyeX = cosf(fRayAngle); // Unit vector for ray in player space
+			float eyeY = sinf(fRayAngle);
 
 			// Incrementally cast ray from player, along ray angle, testing for 
 			// intersection with a block
 			while (!bHitWall && fDistanceToWall < Depth) {
 
 				fDistanceToWall += fStepSize;
-				int nTestX = (int)(player.y + fEyeX * fDistanceToWall);
-				int nTestY = (int)(player.x + fEyeY * fDistanceToWall);
+				int testX = static_cast<int>(floor(player.x + eyeX * fDistanceToWall));
+				int testY = static_cast<int>(floor(player.y + eyeY * fDistanceToWall));
 
 				// Test if ray is out of bounds
-				if (nTestX < 0 || nTestX >= maze.generator->H ||
-					nTestY < 0 || nTestY >= maze.generator->W) {
+				if (maze.hasBounds && (testX < 0 || testX >= maze.generator->W ||
+					testY < 0 || testY >= maze.generator->H)) {
 					bHitWall = true;			// Just set distance to maximum depth
 					fDistanceToWall = Depth;
+					continue;
 				}
-				else {
 
-					// Ray is inbounds so test to see if the ray cell is a wall block
-					if (map.c_str()[nTestX * maze.generator->W + nTestY] == '#') {
+				// Ray is inbounds so test to see if the ray cell is a wall block
+				if (map.c_str()[(testY + maze.generator->H) % maze.generator->H *
+					maze.generator->W + (testX + maze.generator->W) % maze.generator->W] == '#') {
 
-						// Ray has hit wall
-						bHitWall = true;
+					// Ray has hit wall
+					bHitWall = true;
 
-						// To highlight tile boundaries, cast a ray from each corner
-						// of the tile, to the player. The more coincident this ray
-						// is to the rendering ray, the closer we are to a tile 
-						// boundary, which we'll shade to add detail to the walls
-						std::vector<std::pair<float, float>> p;
+					// To highlight tile boundaries, cast a ray from each corner
+					// of the tile, to the player. The more coincident this ray
+					// is to the rendering ray, the closer we are to a tile 
+					// boundary, which we'll shade to add detail to the walls
+					std::vector<std::pair<float, float>> p;
 
-						// Test each corner of hit tile, storing the distance from
-						// the player, and the calculated dot product of the two rays
-						for (int tx = 0; tx < 2; tx++)
-							for (int ty = 0; ty < 2; ty++)
-							{
-								// Angle of corner to eye
-								float vy = (float)nTestY + ty - player.x;
-								float vx = (float)nTestX + tx - player.y;
-								float d = sqrt(vx*vx + vy * vy);
-								float dot = (fEyeX * vx / d) + (fEyeY * vy / d);
-								p.push_back(std::make_pair(d, dot));
-							}
+					// Test each corner of hit tile, storing the distance from
+					// the player, and the calculated dot product of the two rays
+					for (int tx = 0; tx < 2; tx++)
+						for (int ty = 0; ty < 2; ty++) {
+							// Angle of corner to eye
+							float vx = (float)testX + tx - player.x;
+							float vy = (float)testY + ty - player.y;
+							float d = sqrt(vx * vx + vy * vy);
+							float dot = (eyeX * vx / d) + (eyeY * vy / d);
+							p.push_back(std::make_pair(d, dot));
+						}
 
-						// Sort Pairs from closest to farthest
-						sort(p.begin(), p.end(), [](const std::pair<float, float> &left, const std::pair<float, float> &right) {return left.first < right.first; });
+					// Sort Pairs from closest to farthest
+					sort(p.begin(), p.end(), [](const std::pair<float, float> &left, const std::pair<float, float> &right) {return left.first < right.first; });
 
-						// First two/three are closest (we will never see all four)
-						//float fBound = 0.01;
-						float fBound = 0.0033f;
-						if (acos(p.at(0).second) < fBound) bBoundary = true;
-						if (acos(p.at(1).second) < fBound) bBoundary = true;
-						if (acos(p.at(2).second) < fBound) bBoundary = true;
-					}
+					// First two/three are closest (we will never see all four)
+					//float fBound = 0.01;
+					float fBound = 0.0033f;
+					if (acos(p.at(0).second) < fBound) bBoundary = true;
+					if (acos(p.at(1).second) < fBound) bBoundary = true;
+					if (acos(p.at(2).second) < fBound) bBoundary = true;
 				}
 			}
 
@@ -238,16 +247,15 @@ void CommandLineFPS::start() {
 		if (showMinimap) {
 			for (int nx = 0; nx < minimapWidth; nx++)
 				for (int ny = 0; ny < minimapHeight; ny++) {
-					int nXTemp = nx - minimapWidth / 2 + (int)player.x;
-					int nYTemp = ny - minimapHeight / 2 + (int)player.y;
-					if (maze.generator->hasBounds &&
+					int nXTemp = nx - minimapWidth / 2 + static_cast<int>(player.x);
+					int nYTemp = ny - minimapHeight / 2 + static_cast<int>(player.y);
+					if (maze.hasBounds &&
 						(nXTemp < 0 || nXTemp >= maze.generator->W ||
-						nYTemp < 0 || nYTemp >= maze.generator->H))
+							nYTemp < 0 || nYTemp >= maze.generator->H))
 						screen[(ny + 1) * screenWidth + nx] = ' ';
 					else {
 						screen[(ny + 1) * screenWidth + nx] =
-						map[(nYTemp + maze.generator->H) % maze.generator->H * maze.generator->W +
-							(nXTemp + maze.generator->W) % maze.generator->W];
+							map[(nYTemp + 2 * maze.generator->H) % maze.generator->H * maze.generator->W + (nXTemp + 2 * maze.generator->W) % maze.generator->W];
 					}
 				}
 			screen[(minimapHeight / 2 + 1) * screenWidth + minimapWidth / 2] = 'P';

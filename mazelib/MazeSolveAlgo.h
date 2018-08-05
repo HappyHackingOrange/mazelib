@@ -13,19 +13,23 @@ public:
 	xt::xarray<int8_t> grid;
 	std::pair<int, int> start;
 	std::pair<int, int> end;
+	bool hasBounds;
 
-	auto solve(xt::xarray<int8_t> grid, std::pair<int, int> start, std::pair<int, int> end) {
-		solve_preprocessor(grid, start, end);
+	auto solve(xt::xarray<int8_t> grid, std::pair<int, int> start, std::pair<int, int> end, 
+		bool hasBounds) {
+		solve_preprocessor(grid, start, end, hasBounds);
 		return solve();
 	}
 
 protected:
 
-	void solve_preprocessor(xt::xarray<int8_t> grid, std::pair<int, int> start, std::pair<int, int> end) {
+	void solve_preprocessor(xt::xarray<int8_t> grid, std::pair<int, int> start, 
+		std::pair<int, int> end, bool hasBounds) {
 
 		this->grid = grid;
 		this->start = start;
 		this->end = end;
+		this->hasBounds = hasBounds;
 
 		// validating checks
 		if (grid.size() == 0)
@@ -55,14 +59,28 @@ protected:
 		const auto &[r, c] = posi;
 		std::vector<std::pair<int, int>> ns;
 
-		if (r > 1 && grid(r - 2, c) == is_wall)
-			ns.push_back(std::make_pair(r - 2, c));
-		if (r < grid.shape()[0] - 2 && grid(r + 2, c) == is_wall)
-			ns.push_back(std::make_pair(r + 2, c));
-		if (c > 1 && grid(r, c - 2) == is_wall)
-			ns.push_back(std::make_pair(r, c - 2));
-		if (c < grid.shape()[1] - 2 && grid(r, c + 2) == is_wall)
-			ns.push_back(std::make_pair(r, c + 2));
+		if (hasBounds) {
+			if (r > 1 && grid(r - 2, c) == is_wall)
+				ns.push_back(std::make_pair(r - 2, c));
+			if (r < grid.shape()[0] - 2 && grid(r + 2, c) == is_wall)
+				ns.push_back(std::make_pair(r + 2, c));
+			if (c > 1 && grid(r, c - 2) == is_wall)
+				ns.push_back(std::make_pair(r, c - 2));
+			if (c < grid.shape()[1] - 2 && grid(r, c + 2) == is_wall)
+				ns.push_back(std::make_pair(r, c + 2));
+		}
+		else {
+			int H = static_cast<int>(grid.shape()[0]);
+			int W = static_cast<int>(grid.shape()[1]);
+			if (grid((r - 2 + H) % H, c) == is_wall)
+				ns.push_back(std::make_pair((r - 2 + H) % H, c));
+			if (grid((r + 2) % H, c) == is_wall)
+				ns.push_back(std::make_pair((r + 2) % H, c));
+			if (grid(r, (c - 2 + W) % W) == is_wall)
+				ns.push_back(std::make_pair(r, (c - 2 + W) % W));
+			if (grid(r, (c + 2) % W) == is_wall)
+				ns.push_back(std::make_pair(r, (c + 2) % W));
+		}
 
 		random::shuffle(ns);
 
@@ -78,14 +96,28 @@ protected:
 		const auto &[r, c] = posi;
 		std::vector<std::pair<int, int>> ns;
 
-		if (r > 1 && grid(r - 1, c) == 0 && grid(r - 2, c) == 0)
-			ns.push_back(std::make_pair(r - 2, c));
-		if (r < grid.shape()[0] - 2 && grid(r + 1, c) == 0 && grid(r + 2, c) == 0)
-			ns.push_back(std::make_pair(r + 2, c));
-		if (c > 1 && grid(r, c - 1) == 0 && grid(r, c - 2) == 0)
-			ns.push_back(std::make_pair(r, c - 2));
-		if (c < grid.shape()[1] - 2 && grid(r, c + 1) == 0 && grid(r, c + 2) == 0)
-			ns.push_back(std::make_pair(r, c + 2));
+		if (hasBounds) {
+			if (r > 1 && grid(r - 1, c) == 0 && grid(r - 2, c) == 0)
+				ns.push_back(std::make_pair(r - 2, c));
+			if (r < grid.shape()[0] - 2 && grid(r + 1, c) == 0 && grid(r + 2, c) == 0)
+				ns.push_back(std::make_pair(r + 2, c));
+			if (c > 1 && grid(r, c - 1) == 0 && grid(r, c - 2) == 0)
+				ns.push_back(std::make_pair(r, c - 2));
+			if (c < grid.shape()[1] - 2 && grid(r, c + 1) == 0 && grid(r, c + 2) == 0)
+				ns.push_back(std::make_pair(r, c + 2));
+		}
+		else {
+			int H = static_cast<int>(grid.shape()[0]);
+			int W = static_cast<int>(grid.shape()[1]);
+			if (grid((r - 1 + H) % H, c) == 0 && grid((r - 2 + H) % H, c) == 0)
+				ns.push_back(std::make_pair((r - 2 + H) % H, c));
+			if (grid((r + 1) % H, c) == 0 && grid((r + 2) % H, c) == 0)
+				ns.push_back(std::make_pair((r + 2) % H, c));
+			if (grid(r, (c - 1 + W) % W) == 0 && grid(r, (c - 2 + W) % W) == 0)
+				ns.push_back(std::make_pair(r, (c - 2 + W) % W));
+			if (grid(r, (c + 1) % W) == 0 && grid(r, (c + 2) % W) == 0)
+				ns.push_back(std::make_pair(r, (c + 2) % W));
+		}
 
 		random::shuffle(ns);
 
@@ -97,7 +129,15 @@ protected:
 	Find the wall cell between to passage cells
 	*/
 	auto midpoint(std::pair<int, int> a, std::pair<int, int> b) {
-		return std::make_pair((a.first + b.first) / 2, (a.second + b.second) / 2);
+		int rowDiff = abs(a.first - b.first);
+		int colDiff = abs(a.second - b.second);
+		int connectingRow = (a.first + b.first) / 2;
+		int connectingCol = (a.second + b.second) / 2;
+		if (rowDiff > 2)
+			connectingRow = (a.first + b.first + static_cast<int>(grid.shape()[0])) / 2;
+		if (colDiff > 2)
+			connectingCol = (a.second + b.second + static_cast<int>(grid.shape()[1])) / 2;
+		return std::make_pair(connectingRow, connectingCol);
 	}
 
 	/*

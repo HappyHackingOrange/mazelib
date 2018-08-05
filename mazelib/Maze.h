@@ -18,6 +18,7 @@ public:
 	xt::xarray<int8_t> grid;
 	std::pair<int, int> start;
 	std::pair<int, int> end;
+	bool hasBounds;
 
 	MazeSolveAlgo * solver;
 	std::vector<std::vector<std::pair<int, int>>> solutions;

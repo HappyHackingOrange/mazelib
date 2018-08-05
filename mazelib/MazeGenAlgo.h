@@ -19,8 +19,8 @@ public:
 			throw std::out_of_range("Mazes cannot be smaller than 3x3.");
 		this->h = h;
 		this->w = w;
-		this->H = (2 * h) + 1;
-		this->W = (2 * w) + 1;
+		this->H = (2 * h) + hasBounds;
+		this->W = (2 * w) + hasBounds;
 		this->hasBounds = hasBounds;
 	}
 
@@ -41,14 +41,26 @@ protected:
 
 		std::vector<std::pair<int, int>> ns;
 
-		if (r > 1 && grid(r - 2, c) == is_wall)
-			ns.push_back(std::make_pair(r - 2, c));
-		if (r < H - 2 && grid(r + 2, c) == is_wall)
-			ns.push_back(std::make_pair(r + 2, c));
-		if (c > 1 && grid(r, c - 2) == is_wall)
-			ns.push_back(std::make_pair(r, c - 2));
-		if (c < W - 2 && grid(r, c + 2) == is_wall)
-			ns.push_back(std::make_pair(r, c + 2));
+		if (hasBounds) {
+			if (r > 1 && grid(r - 2, c) == is_wall)
+				ns.push_back(std::make_pair(r - 2, c));
+			if (r < H - 2 && grid(r + 2, c) == is_wall)
+				ns.push_back(std::make_pair(r + 2, c));
+			if (c > 1 && grid(r, c - 2) == is_wall)
+				ns.push_back(std::make_pair(r, c - 2));
+			if (c < W - 2 && grid(r, c + 2) == is_wall)
+				ns.push_back(std::make_pair(r, c + 2));
+		}
+		else {
+			if (grid((r - 2 + H) % H, c) == is_wall)
+				ns.push_back(std::make_pair((r - 2 + H) % H, c));
+			if (grid((r + 2) % H, c) == is_wall)
+				ns.push_back(std::make_pair((r + 2) % H, c));
+			if (grid(r, (c - 2 + W) % W) == is_wall)
+				ns.push_back(std::make_pair(r, (c - 2 + W) % W));
+			if (grid(r, (c + 2) % W) == is_wall)
+				ns.push_back(std::make_pair(r, (c + 2) % W));
+		}
 
 		random::shuffle(ns);
 

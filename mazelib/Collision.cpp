@@ -7,7 +7,7 @@ std::vector<std::vector<std::pair<int, int>>> Collision::solve() {
 
 	// deal with the case where the start is on the edge
 	auto start = this->start;
-	if (on_edge(this->start))
+	if (hasBounds && on_edge(this->start))
 		start = push_edge(this->start);
 
 	// need a comparator to sort paths first before using set_difference
@@ -143,12 +143,12 @@ std::vector<std::vector<std::pair<int, int>>> Collision::fix_entrances(std::vect
 		p.pop_back();
 
 	// if start not on edge, remove first position in all paths
-	if (!on_edge(start))
+	if (hasBounds && !on_edge(start) || !hasBounds)
 		for (auto & p : temp_paths)
 			p.erase(p.begin());
 
 	// if end not on edge, remove last position in all paths
-	if (!on_edge(end))
+	if (hasBounds && !on_edge(end) || !hasBounds)
 		for (auto & p : temp_paths)
 			p.pop_back();
 

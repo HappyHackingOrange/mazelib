@@ -5,6 +5,7 @@ Maze::Maze() {
 	grid = xt::xarray<int8_t>();
 	start = NONE;
 	end = NONE;
+	hasBounds = false;
 	solver = NULL;
 	solutions = {};
 }
@@ -20,12 +21,15 @@ void Maze::generate() {
 		grid = generator->generate();
 		start = NONE;
 		end = NONE;
+		hasBounds = generator->hasBounds;
 		solutions = {};
 	}
 }
 
 void Maze::generate_entrances(bool start_outer, bool end_outer) {
 
+	if ((start_outer || end_outer) && !hasBounds)
+		throw "can't have start or end on edges in boundless maze";
 	if (start_outer && end_outer)
 		generate_outer_entrances();
 	else if (!start_outer && !end_outer)
@@ -74,12 +78,15 @@ void Maze::generate_inner_entrances() {
 	auto H = static_cast<int>(grid.shape()[0]);
 	auto W = static_cast<int>(grid.shape()[1]);
 
-	start = std::make_pair(random::randrange(1, H, 2), random::randrange(1, W, 2));
-	auto end = std::make_pair(random::randrange(1, H, 2), random::randrange(1, W, 2));
+	start = std::make_pair(random::randrange(hasBounds, H - !hasBounds, 2), 
+		random::randrange(hasBounds, W - !hasBounds, 2));
+	auto end = std::make_pair(random::randrange(hasBounds, H - !hasBounds, 2), 
+		random::randrange(hasBounds, W - !hasBounds, 2));
 
 	// make certain the start and end points aren't the same
 	while (end == start)
-		end = std::make_pair(random::randrange(1, H, 2), random::randrange(1, W, 2));
+		end = std::make_pair(random::randrange(hasBounds, H - !hasBounds, 2),
+			random::randrange(hasBounds, W - !hasBounds, 2));
 
 	this->end = end;
 
@@ -174,7 +181,7 @@ void Maze::solve() {
 	else if (start == NONE || end == NONE)
 		throw "Start and end times must be set first";
 	else
-		solutions = solver->solve(grid, start, end);
+		solutions = solver->solve(grid, start, end, hasBounds);
 
 }
 

@@ -8,8 +8,10 @@ xt::xarray<int8_t> Prims::generate() {
 	xt::xarray<int8_t> grid = xt::ones<int8_t>({ H, W });
 
 	// choose a random starting position
-	int current_row = random::randrange(1, H, 2);
-	int current_col = random::randrange(1, W, 2);
+	//int current_row = random::randrange(1, H, 2);
+	//int current_col = random::randrange(1, W, 2);
+	int current_row = random::randrange(hasBounds, H - !hasBounds, 2);
+	int current_col = random::randrange(hasBounds, W - !hasBounds, 2);
 	grid(current_row, current_col) = 0;
 
 	// create a weighted list of all vertices connected in the graph
@@ -27,8 +29,16 @@ xt::xarray<int8_t> Prims::generate() {
 		neighbors.erase(neighbors.begin() + nn);
 
 		// connect that neighbor to a random neighbor with grid[posi] == 0
-		const auto [nearest_n0, nearest_n1] = find_neighbors(current_row, current_col, grid)[0];
-		grid((current_row + nearest_n0) / 2, (current_col + nearest_n1) / 2) = 0;
+		const auto[nearest_n0, nearest_n1] = find_neighbors(current_row, current_col, grid)[0];
+		int rowDiff = abs(current_row - nearest_n0);
+		int colDiff = abs(current_col - nearest_n1);
+		int connectingRow = (current_row + nearest_n0) / 2;
+		int connectingCol = (current_col + nearest_n1) / 2;
+		if (rowDiff > 2)
+			connectingRow = (current_row + nearest_n0 + H) / 2;
+		if (colDiff > 2)
+			connectingCol = (current_col + nearest_n1 + W) / 2;
+		grid(connectingRow, connectingCol) = 0;
 
 		// find all unvisited neighbors of current, add them to neighbors
 		auto unvisited = find_neighbors(current_row, current_col, grid, true);
