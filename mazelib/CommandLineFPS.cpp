@@ -64,7 +64,6 @@ void CommandLineFPS::start() {
 
 			float xDiff = solution.front().second + 0.5f - player.x;
 			float yDiff = solution.front().first + 0.5f - player.y;
-
 			if (abs(xDiff) > 2)
 				xDiff = -copysignf(1.0, xDiff);
 			if (abs(yDiff) > 2)
@@ -96,6 +95,10 @@ void CommandLineFPS::start() {
 				player.moveForward(fElapsedTime, map, maze.generator->W, maze.generator->H);
 				float newXDiff = solution.front().second + 0.5f - player.x;
 				float newYDiff = solution.front().first + 0.5f - player.y;
+				if (abs(newXDiff) > 2)
+					newXDiff = -copysignf(1.0, newXDiff);
+				if (abs(newYDiff) > 2)
+					newYDiff = -copysignf(1.0, newYDiff);
 				if (xDiff * newXDiff < 0)
 					player.x = solution.front().second + 0.5f;
 				if (yDiff * newYDiff < 0)

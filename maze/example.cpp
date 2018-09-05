@@ -4,19 +4,16 @@
 #include "CommandLineFPS.h"
 
 int main() {
-	int h = 8, w = 16;
+	int mazeHeight = 40, mazeWidth = 10;
+	bool hasBounds = false;
 	Maze maze = Maze();
+	maze.generator = new Prims(mazeHeight, mazeWidth, hasBounds);
+	maze.generate();
+	maze.generate_entrances();
 	maze.solver = new Collision();
-
-	//while (true){
-		maze.generator = new Prims(h, w, false);
-		maze.generate();
-		maze.generate_entrances(false, false);
-		maze.solve();
-		View * view = new CommandLineFPS(maze);
-		view->player.isComputer = true;
-		view->start();
-		delete view;
-		h++, w++;
-	//}
+	maze.solve();
+	View * view = new CommandLineFPS(maze);
+	view->player.isComputer = false;
+	view->start();
+	delete view;
 }

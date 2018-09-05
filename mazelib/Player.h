@@ -11,7 +11,7 @@ public:
 	float x = 0;
 	float y = 0;
 	float angle = 0;
-	float speed = 3.0f;
+	float speed = 4.0f;
 	bool isComputer = false;
 
 	Player();

@@ -35,7 +35,7 @@ public:
 	Generate maze entrances.
 	Entrances can be on the walls, or inside the maze.
 	*/
-	void generate_entrances(bool start_outer = true, bool end_outer = true);
+	void generate_entrances(bool start_outer = false, bool end_outer = false);
 
 	/*
 	Use the Monte Carlo method to generate a maze of defined difficulty.
