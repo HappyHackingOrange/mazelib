@@ -44,7 +44,7 @@ A generating algorithm is selected, the Prim's algorithm in this case, to genera
 
 ### Solving the maze
 
-To solve the maze, just add in few lines:
+To solve the maze using one of the solving algorithms (Collision algorithm in this case), just add in few lines:
 
 	#include "Maze.h"
 	#include "Prims.h"
