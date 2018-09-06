@@ -4,7 +4,7 @@ The mazelib library provides tools to generate and solving 2D mazes, and 3D engi
 
 This library only supports C++17 version or higher.
 
-<img src="/img/mazeExample.gif" alt="Navigating through maze in 3D" width="50%">
+<img src="/img/mazeExample.gif" alt="Navigating through maze in 3D" width="75%" align="center">
 
 ## Quickstart
 
