@@ -82,7 +82,7 @@ This code should print the following maze, which shows the starting position "S"
 
 ### Implementing a game engine
 
-The following code example implements a game engine which displays the maze in a command line.  The game enginer is implemented through the View interface class--it allows for flexiblity if you want to design a different game engine with same maze generator/solver.
+The following code example implements a game engine which displays the maze on a terminal window.  The game engine is implemented through the View interface class--it allows for flexiblity if you want to design a different game engine with the same maze generator/solver.
 
 #include "Maze.h"
 #include "Prims.h"
