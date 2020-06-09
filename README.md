@@ -82,4 +82,25 @@ This code should print the following maze, which shows the starting position "S"
 
 ### Implementing a game engine
 
-(work in progress)
+The following code example implements a game engine which displays the maze in a command line.  The game enginer is implemented through the View interface class--it allows for flexiblity if you want to design a different game engine with same maze generator/solver.
+
+#include "Maze.h"
+#include "Prims.h"
+#include "Collision.h"
+#include "CommandLineFPS.h"
+
+	int main() {
+		int mazeHeight = 40, mazeWidth = 10;
+		bool hasBounds = false;
+		Maze maze = Maze();
+		maze.generator = new Prims(mazeHeight, mazeWidth, hasBounds);
+		maze.generate();
+		maze.generate_entrances();
+		maze.solver = new Collision();
+		maze.solve();
+		View * view = new CommandLineFPS(maze);
+		view->player.isComputer = false;
+		view->start();
+		delete view;
+	}
+
